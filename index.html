@@ -226,7 +226,7 @@
             50% { opacity: 1; }
         }
 
-        /* Nút xem lời chúc sau khi xem xong 10 ảnh */
+        /* Nút xem lời chúc sau khi xem xong tất cả ảnh */
         #final-trigger-screen {
             display: none;
             flex-direction: column;
@@ -302,7 +302,7 @@
     <div id="bg-decor"></div>
 
     <div class="container">
-        <!-- Main Screen (Màn hình chính có bó hoa) -->
+        <!-- Main Screen -->
         <div id="main-screen">
             <h1>Chúc Kim Ngân 20/10 Luôn Xinh Đẹp</h1>
             
@@ -338,7 +338,7 @@
             </div>
         </div>
 
-        <!-- Gallery Screen (Màn hình xem ảnh) -->
+        <!-- Gallery Screen -->
         <div id="gallery-screen" onclick="nextPhoto()">
             <div class="photo-card" id="photoCardContainer">
                 <div class="photo-frame">
@@ -349,15 +349,15 @@
             <div class="tap-hint" id="tap-hint-text">Chạm vào màn hình để xem tiếp nhé ✨</div>
         </div>
 
-        <!-- Final Trigger Screen (Màn hình hiện nút "Nhấn zô xem đê") -->
+        <!-- Final Trigger Screen -->
         <div id="final-trigger-screen">
             <h1 style="margin-bottom: 25px; font-size: 1.6rem;">Đã xem hết ảnh công chúa rồi nè! ✨</h1>
             <div class="trigger-btn" onclick="showLetterScreen()">
-                <span>Nhấn zô xem đê 💌</span>
+                <span>nhấn zô đây nekk 💌</span>
             </div>
         </div>
 
-        <!-- Letter Screen (Màn hình bức thư lời chúc) -->
+        <!-- Letter Screen -->
         <div id="letter-screen">
             <div class="letter-card">
                 <h2>Gửi Kim Ngân 💕</h2>
@@ -374,7 +374,7 @@
 
     <script>
         /* ========================================================================== */
-        /* 📍 CHỖ THAY 10 FILE CẢNH JPG CỦA BẠN VÀO ĐÂY:                               */
+        /* 📍 CHỖ THAY 10 FILE ẢNH JPG CỦA BẠN VÀO ĐÂY:                                */
         /* ========================================================================== */
         const photosData = [
             {
@@ -465,7 +465,7 @@
 
 
         /* ========================================================================== */
-        /* LOGIC ĐIỀU HƯỚNG MÀN HÌNH & XEM ẢNH                                        */
+        /* LOGIC XEM ẢNH & CHUYỂN MÀN HÌNH                                            */
         /* ========================================================================== */
         let currentIndex = 0;
         const mainScreen = document.getElementById('main-screen');
@@ -475,7 +475,6 @@
         const currentPhoto = document.getElementById('current-photo');
         const currentCaption = document.getElementById('current-caption');
 
-        // Tạo ngôi sao và trái tim bay lơ lửng ở nền
         function createBgDecor() {
             const bgDecor = document.getElementById('bg-decor');
             const symbols = ['⭐', '❤️', '✨', '💖', '🌸'];
@@ -515,16 +514,8 @@
             if (event) event.stopPropagation();
             
             currentIndex++;
-            
-            // Xong 8 ảnh đầu -> Quay lại màn hình chính và đổi tên nút thành "Bông hoa đẹp nhất 20/10 đây nè"
-            if (currentIndex === 8) {
-                galleryScreen.style.display = 'none';
-                mainScreen.style.display = 'flex';
-                document.getElementById('main-btn-text').innerText = "Bông hoa đẹp nhất 20/10 đây nè";
-                return;
-            }
 
-            // Xong 10 ảnh -> Hiện màn hình nút "Nhấn zô xem đê 💌"
+            // Sau khi chạm xem hết tất cả các ảnh (10 ảnh), hiện nút "nhấn zô đây nekk"
             if (currentIndex >= photosData.length) {
                 galleryScreen.style.display = 'none';
                 finalTriggerScreen.style.display = 'flex';
@@ -540,7 +531,6 @@
             typeWriterEffect();
         }
 
-        // Lời chúc gửi Kim Ngân
         const letterText = `Khánh chúc Kim Ngân 20/10 luôn xinh đẹp, đáng yêu và rạng rỡ mỗi ngày. 
 
 Chúc cậu luôn học giỏi, luôn gặp thật nhiều may mắn và gặt hái được nhiều thành công nhé! Mong mọi điều tốt đẹp nhất sẽ luôn đến với công chúa ✨🌸💖`;
