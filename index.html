@@ -3,176 +3,484 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bó Hoa Mẫu Đơn</title>
+    <title>Chúc Mừng 20/10 - Kim Ngân</title>
     <style>
-        body {
+        * {
             margin: 0;
-            height: 100vh;
-            background-color: #ffc0cb; /* Nền màu hồng */
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffb6c1, #ff69b4, #ff1493);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow-x: hidden;
+            position: relative;
+            color: #fff;
         }
 
-        .bouquet-container {
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .bg-element {
+            position: absolute;
+            pointer-events: none;
+            animation: floatUp 6s linear infinite;
+            opacity: 0.6;
+            z-index: 0;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+        }
+
+        .container {
             position: relative;
-            width: 350px;
-            height: 500px;
+            z-index: 10;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* Lớp giấy gói bên ngoài và nơ */
-        .wrapper-paper {
-            position: absolute;
-            bottom: 0;
-            width: 320px;
-            height: 350px;
-            background: linear-gradient(135deg, #f5d6ba, #e2b08a);
-            border-radius: 20px 20px 100px 100px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            z-index: 2;
+        #main-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1s ease;
         }
 
-        .wrapper-paper::before {
-            content: '';
-            position: absolute;
-            top: -40px;
-            left: -20px;
-            right: -20px;
-            height: 150px;
-            background: rgba(255, 255, 255, 0.75);
-            border-radius: 50%;
-            z-index: -1;
+        h1 {
+            font-size: 2rem;
+            color: #fff;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            margin-bottom: 25px;
+            font-weight: 700;
         }
 
-        /* Phần thân và ruy băng */
-        .ribbon {
-            position: absolute;
-            bottom: 80px;
-            width: 40px;
-            height: 40px;
-            background: #ffb6c1;
-            border-radius: 50%;
-            z-index: 4;
+        .bouquet-container {
+            width: 200px;
+            height: 240px;
+            margin-bottom: 30px;
+            animation: pulseRose 2s ease-in-out infinite;
         }
 
-        .ribbon-tail-1, .ribbon-tail-2 {
-            position: absolute;
-            bottom: -60px;
-            width: 15px;
-            height: 100px;
-            background: linear-gradient(to bottom, #ffb6c1, #e2b08a);
-            z-index: 3;
-            transform-origin: top;
+        @keyframes pulseRose {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
-        .ribbon-tail-1 {
-            left: 10px;
-            transform: rotate(15deg);
+        .bouquet-container svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
         }
 
-        .ribbon-tail-2 {
-            right: 10px;
-            transform: rotate(-15deg);
+        .trigger-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #d81b60;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: 2px solid #fff;
+            animation: bounceBtn 2s infinite;
         }
 
-        /* Khu vực chứa các bông hoa */
-        .flowers-cluster {
-            position: absolute;
-            top: 20px;
-            width: 300px;
-            height: 250px;
-            z-index: 3;
+        .trigger-btn:hover {
+            background: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
 
-        /* Kiểu dáng chung cho hoa mẫu đơn */
-        .peony {
-            position: absolute;
-            width: 70px;
-            height: 70px;
-            background: radial-gradient(circle, #ff99bb 0%, #ff6699 60%, #ff4d88 100%);
-            border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        @keyframes bounceBtn {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-8px); }
+            60% { transform: translateY(-4px); }
         }
 
-        .peony::before {
-            content: '';
-            position: absolute;
-            top: 5px; left: 5px; right: 5px; bottom: 5px;
-            background: radial-gradient(circle, #ffb3d1 0%, #ff80ab 70%);
-            border-radius: 50%;
-            opacity: 0.9;
+        .arrow {
+            font-size: 1.3rem;
+            animation: moveArrow 1s infinite alternate;
         }
 
-        .peony::after {
-            content: '';
-            position: absolute;
-            top: 15px; left: 15px; right: 15px; bottom: 15px;
-            background: radial-gradient(circle, #ffe6f0 0%, #ff99bb 80%);
-            border-radius: 50%;
+        @keyframes moveArrow {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(6px); }
         }
 
-        /* Định vị từng bông hoa để tạo thành bó tròn */
-        .p1 { top: 30px; left: 110px; transform: scale(1.2); }
-        .p2 { top: 70px; left: 60px; transform: scale(1.1); }
-        .p3 { top: 60px; left: 160px; transform: scale(1.15); }
-        .p4 { top: 120px; left: 30px; }
-        .p5 { top: 130px; left: 100px; transform: scale(1.25); }
-        .p6 { top: 120px; left: 180px; transform: scale(1.1); }
-        .p7 { top: 0px; left: 75px; transform: scale(0.9); }
-        .p8 { top: 10px; left: 160px; transform: scale(0.95); }
-
-        /* Lá cây xanh điểm xuyết */
-        .leaf {
-            position: absolute;
-            width: 20px;
-            height: 10px;
-            background-color: #76c7c0;
-            border-radius: 50% 0 50% 0;
-            z-index: 2;
+        #gallery-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            cursor: pointer;
+            animation: fadeIn 0.5s ease;
         }
 
-        .l1 { top: 25px; left: 95px; transform: rotate(-30deg); }
-        .l2 { top: 50px; left: 40px; transform: rotate(45deg); }
-        .l3 { top: 100px; left: 10px; transform: rotate(15deg); }
-        .l4 { top: 40px; left: 210px; transform: rotate(-60deg); }
-        .l5 { top: 110px; left: 240px; transform: rotate(30deg); }
+        .photo-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 15px 20px 15px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: rotate(-1deg);
+            transition: transform 0.3s;
+        }
+
+        .photo-card:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .photo-frame {
+            width: 100%;
+            height: 380px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #eee;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .caption {
+            margin-top: 15px;
+            font-size: 1.25rem;
+            color: #d81b60;
+            font-weight: bold;
+            text-shadow: none;
+        }
+
+        .tap-hint {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-style: italic;
+            animation: fadeInOut 1.5s infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        #letter-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            animation: fadeIn 1s ease;
+        }
+
+        .letter-card {
+            background: #fffaf0;
+            color: #5c3a21;
+            padding: 30px 25px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 420px;
+            text-align: left;
+            position: relative;
+            border: 3px dashed #ffb6c1;
+            transform: rotate(0.5deg);
+        }
+
+        .letter-card h2 {
+            color: #d81b60;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+        }
+
+        .letter-content {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            white-space: pre-line;
+        }
+
+        .letter-signature {
+            text-align: right;
+            font-weight: bold;
+            font-style: italic;
+            color: #d81b60;
+            font-size: 1.1rem;
+        }
+
+        .final-btn-container {
+            margin-top: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
 
-    <div class="bouquet-container">
-        <!-- Giấy gói hoa -->
-        <div class="wrapper-paper"></div>
+    <div id="bg-decor"></div>
 
-        <!-- Ruy băng và dây thắt -->
-        <div class="ribbon"></div>
-        <div class="ribbon-tail-1"></div>
-        <div class="ribbon-tail-2"></div>
+    <div class="container">
+        <!-- Main Screen -->
+        <div id="main-screen">
+            <h1>Chúc Kim Ngân 20/10 Luôn Xinh Đẹp</h1>
+            
+            <div class="bouquet-container">
+                <svg viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M70 120 L120 220 L170 120 L200 130 L160 235 C150 240, 90 240, 80 235 L40 130 Z" fill="#ffb6c1" stroke="#ff69b4" stroke-width="3"/>
+                    <path d="M120 120 L120 220" stroke="#ff69b4" stroke-width="2"/>
+                    <path d="M120 150 L160 180" stroke="#ff69b4" stroke-width="2"/>
+                    <path d="M120 150 L80 180" stroke="#ff69b4" stroke-width="2"/>
+                    <path d="M120 130 C100 110, 80 130, 100 150 C120 130, 120 130, 120 130 Z" fill="#ff1493"/>
+                    <path d="M120 130 C140 110, 160 130, 140 150 C120 130, 120 130, 120 130 Z" fill="#ff1493"/>
+                    <circle cx="120" cy="133" r="10" fill="#c71585"/>
+                    <path d="M120 130 L120 80" stroke="#2e7d32" stroke-width="4"/>
+                    <path d="M120 100 L95 85" stroke="#2e7d32" stroke-width="3"/>
+                    <path d="M120 105 L145 85" stroke="#2e7d32" stroke-width="3"/>
+                    <path d="M95 85 Q80 70, 90 60 Q105 70, 95 85 Z" fill="#4caf50"/>
+                    <path d="M145 85 Q160 70, 150 60 Q135 70, 145 85 Z" fill="#4caf50"/>
+                    <circle cx="120" cy="55" r="28" fill="#d32f2f"/>
+                    <path d="M110 40 Q120 30, 130 40 Q140 50, 130 60 Q120 70, 110 60 Q100 50, 110 40 Z" fill="#f44336"/>
+                    <circle cx="120" cy="55" r="10" fill="#b71c1c"/>
+                    <circle cx="85" cy="70" r="24" fill="#e53935"/>
+                    <path d="M77 58 Q85 48, 93 58 Q101 68, 93 78 Q85 88, 77 78 Q69 68, 77 58 Z" fill="#ff5252"/>
+                    <circle cx="155" cy="70" r="24" fill="#e53935"/>
+                    <path d="M147 58 Q155 48, 163 58 Q171 68, 163 78 Q155 88, 147 78 Q139 68, 147 58 Z" fill="#ff5252"/>
+                    <circle cx="100" cy="35" r="22" fill="#ef5350"/>
+                    <circle cx="140" cy="35" r="22" fill="#ef5350"/>
+                </svg>
+            </div>
 
-        <!-- Các bông hoa và lá -->
-        <div class="flowers-cluster">
-            <!-- Lá -->
-            <div class="leaf l1"></div>
-            <div class="leaf l2"></div>
-            <div class="leaf l3"></div>
-            <div class="leaf l4"></div>
-            <div class="leaf l5"></div>
+            <div class="trigger-btn" onclick="startGallery()">
+                <span>Bông hoa đẹp nhất 20/10 đây nè</span>
+                <span class="arrow">➔</span>
+            </div>
+        </div>
 
-            <!-- Hoa mẫu đơn -->
-            <div class="peony p1"></div>
-            <div class="peony p2"></div>
-            <div class="peony p3"></div>
-            <div class="peony p4"></div>
-            <div class="peony p5"></div>
-            <div class="peony p6"></div>
-            <div class="peony p7"></div>
-            <div class="peony p8"></div>
+        <!-- Gallery Screen -->
+        <div id="gallery-screen" onclick="nextPhoto()">
+            <div class="photo-card" id="photoCardContainer">
+                <div class="photo-frame">
+                    <img id="current-photo" src="" alt="Kim Ngân xinh đẹp">
+                </div>
+                <div class="caption" id="current-caption"></div>
+            </div>
+            <div class="tap-hint" id="tap-hint-text">Chạm vào màn hình để xem tiếp nhé ✨</div>
+        </div>
+
+        <!-- Letter Screen -->
+        <div id="letter-screen">
+            <div class="letter-card">
+                <h2>Gửi Kim Ngân 💕</h2>
+                <div class="letter-content" id="typed-letter"></div>
+                <div class="letter-signature">Khánh</div>
+            </div>
+            <div class="final-btn-container">
+                <div class="trigger-btn" onclick="resetExperience()">
+                    <span>Xem lại từ đầu 🌸</span>
+                </div>
+            </div>
         </div>
     </div>
 
+    <script>
+        /* ========================================================================== */
+        /* 📍 CHỖ ĐỂ TẢI/THAY ĐỔI 10 ẢNH JPG CỦA BẠN VÀO ĐÂY:                          */
+        /* Thay thế các chữ 'image1.jpg', 'image2.jpg'... thành tên file jpg của bạn    */
+        /* (Ví dụ: 'ngan1.jpg', 'ngan2.jpg' hoặc đường dẫn URL ảnh của bạn)          */
+        /* ========================================================================== */
+        const photosData = [
+            {
+                url: "image1.jpg", // <--- Thay ảnh 1 ở đây
+                fallback: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80",
+                praise: "Xinh thíaaaa! 🥰"
+            },
+            {
+                url: "image2.jpg", // <--- Thay ảnh 2 ở đây
+                fallback: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80",
+                praise: "Ohhh công chúa ngời ngời! ✨"
+            },
+            {
+                url: "image3.jpg", // <--- Thay ảnh 3 ở đây
+                fallback: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&auto=format&fit=crop&q=80",
+                praise: "Xinh vãi chưởng lun á! 😍"
+            },
+            {
+                url: "image4.jpg", // <--- Thay ảnh 4 ở đây
+                fallback: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&auto=format&fit=crop&q=80",
+                praise: "Đẹp xuất sắc luôn bé ơi! 🌸"
+            },
+            {
+                url: "image5.jpg", // <--- Thay ảnh 5 ở đây
+                fallback: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&auto=format&fit=crop&q=80",
+                praise: "Nhan sắc này đúng là đỉnh chóp! 👑"
+            },
+            {
+                url: "image6.jpg", // <--- Thay ảnh 6 ở đây
+                fallback: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=600&auto=format&fit=crop&q=80",
+                praise: "U là trời, sao mà xinh thế nhờ! 💖"
+            },
+            {
+                url: "image7.jpg", // <--- Thay ảnh 7 ở đây
+                fallback: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80",
+                praise: "Góc nghiêng thần thánh quá đi! 💫"
+            },
+            {
+                url: "image8.jpg", // <--- Thay ảnh 8 ở đây
+                fallback: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&auto=format&fit=crop&q=80",
+                praise: "Nụ cười tỏa nắng luôn nha! ☀️"
+            },
+            {
+                url: "image9.jpg", // <--- Thay ảnh 9 ở đây
+                fallback: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&auto=format&fit=crop&q=80",
+                praise: "Chạm vào màn hình ngunn ơi 💕",
+                special: true
+            },
+            {
+                url: "image10.jpg", // <--- Thay ảnh 10 ở đây
+                fallback: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&auto=format&fit=crop&q=80",
+                praise: "Chạm vào màn hình ngunn ơi 💕",
+                special: true
+            }
+        ];
+        /* ========================================================================== */
+
+        let currentIndex = 0;
+        const mainScreen = document.getElementById('main-screen');
+        const galleryScreen = document.getElementById('gallery-screen');
+        const letterScreen = document.getElementById('letter-screen');
+        const currentPhoto = document.getElementById('current-photo');
+        const currentCaption = document.getElementById('current-caption');
+        const tapHintText = document.getElementById('tap-hint-text');
+
+        function createBgDecor() {
+            const bgDecor = document.getElementById('bg-decor');
+            const symbols = ['⭐', '❤️', '✨', '💖', '🌸'];
+            for (let i = 0; i < 20; i++) {
+                const span = document.createElement('div');
+                span.className = 'bg-element';
+                span.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                span.style.left = Math.random() * 100 + 'vw';
+                span.style.top = Math.random() * 100 + 'vh';
+                span.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                span.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                span.style.animationDelay = (Math.random() * 5) + 's';
+                bgDecor.appendChild(span);
+            }
+        }
+        createBgDecor();
+
+        function startGallery() {
+            mainScreen.style.display = 'none';
+            galleryScreen.style.display = 'flex';
+            currentIndex = 0;
+            displayPhoto();
+        }
+
+        function displayPhoto() {
+            if (currentIndex < photosData.length) {
+                const item = photosData[currentIndex];
+                currentPhoto.src = item.url;
+                currentPhoto.onerror = function() {
+                    this.src = item.fallback;
+                };
+                currentCaption.innerText = item.praise;
+            } else {
+                galleryScreen.style.display = 'none';
+                showLetterScreen();
+            }
+        }
+
+        function nextPhoto(event) {
+            if (event) event.stopPropagation();
+            
+            currentIndex++;
+            
+            if (currentIndex === 8) {
+                galleryScreen.style.display = 'none';
+                mainScreen.style.display = 'flex';
+                const triggerText = document.querySelector('.trigger-btn span');
+                if (triggerText) triggerText.innerText = "Bông hoa đẹp nhất 20/10 đây nè";
+                return;
+            }
+
+            displayPhoto();
+        }
+
+        function showLetterScreen() {
+            letterScreen.style.display = 'flex';
+            typeWriterEffect();
+        }
+
+        const letterText = `Khánh chúc Ngân 20/10 luôn xinh đẹp, rạng rỡ và luôn tràn ngập niềm vui trong cuộc sống. 
+
+Chúc mọi điều tốt đẹp nhất sẽ đến với cậu, luôn mỉm cười và gặt hái thật nhiều thành công nhé! Mong rằng ngày nào của Ngân cũng là một ngày thật hạnh phúc và bình yên. ✨🌸`;
+
+        function typeWriterEffect() {
+            const container = document.getElementById('typed-letter');
+            container.innerHTML = "";
+            
+            let i = 0;
+            function typing() {
+                if (i < letterText.length) {
+                    container.innerHTML += letterText.charAt(i);
+                    i++;
+                    setTimeout(typing, 25);
+                } else {
+                    if (!document.getElementById('final-action-btn')) {
+                        const btnContainer = document.createElement('div');
+                        btnContainer.id = 'final-action-btn';
+                        btnContainer.style.marginTop = '20px';
+                        btnContainer.style.textAlign = 'center';
+                        btnContainer.innerHTML = `<div class="trigger-btn" style="padding: 10px 20px; font-size: 1rem;" onclick="alert('Chúc Kim Ngân mãi đáng yêu và hạnh phúc nha! ❤️')"><span>Nhấn zô xem đê 💌</span></div>`;
+                        document.querySelector('.letter-card').appendChild(btnContainer);
+                    }
+                }
+            }
+            typing();
+        }
+
+        function resetExperience() {
+            letterScreen.style.display = 'none';
+            mainScreen.style.display = 'flex';
+            currentIndex = 0;
+            const finalBtn = document.getElementById('final-action-btn');
+            if (finalBtn) finalBtn.remove();
+        }
+    </script>
 </body>
 </html>
