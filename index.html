@@ -124,7 +124,7 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             color: #d81b60;
             padding: 14px 28px;
             border-radius: 50px;
@@ -226,6 +226,7 @@
             50% { opacity: 1; }
         }
 
+        /* Nút xem lời chúc sau khi xem xong 10 ảnh */
         #final-trigger-screen {
             display: none;
             flex-direction: column;
@@ -233,6 +234,7 @@
             animation: fadeIn 1s ease;
         }
 
+        /* Màn hình lá thư lời chúc */
         #letter-screen {
             display: none;
             flex-direction: column;
@@ -289,18 +291,18 @@
 </head>
 <body>
 
-    <!-- 📍 CHỖ THÊM BÀI HÁT MP3 VÀO ĐÂY: Thay 'music.mp3' bằng file nhạc của bạn -->
+    <!-- 📍 CHỖ THÊM FILE NHẠC MP3 CỦA BẠN VÀO ĐÂY -->
     <audio id="bg-music" loop preload="auto">
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Nút bật tắt nhạc -->
+    <!-- Nút Bật/Tắt Nhạc -->
     <div class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</div>
 
     <div id="bg-decor"></div>
 
     <div class="container">
-        <!-- Main Screen -->
+        <!-- Main Screen (Màn hình chính có bó hoa) -->
         <div id="main-screen">
             <h1>Chúc Kim Ngân 20/10 Luôn Xinh Đẹp</h1>
             
@@ -331,12 +333,12 @@
             </div>
 
             <div class="trigger-btn" onclick="startGallery()">
-                <span>Bông hoa đẹp nhất 20/10 đây nè</span>
+                <span id="main-btn-text">Bông hoa đẹp nhất 20/10 đây nè</span>
                 <span class="arrow">➔</span>
             </div>
         </div>
 
-        <!-- Gallery Screen -->
+        <!-- Gallery Screen (Màn hình xem ảnh) -->
         <div id="gallery-screen" onclick="nextPhoto()">
             <div class="photo-card" id="photoCardContainer">
                 <div class="photo-frame">
@@ -347,15 +349,15 @@
             <div class="tap-hint" id="tap-hint-text">Chạm vào màn hình để xem tiếp nhé ✨</div>
         </div>
 
-        <!-- Final Trigger Screen -->
+        <!-- Final Trigger Screen (Màn hình hiện nút "Nhấn zô xem đê") -->
         <div id="final-trigger-screen">
-            <h1 style="margin-bottom: 20px; font-size: 1.6rem;">Đã xem hết hình của công chúa rồi nè! ✨</h1>
+            <h1 style="margin-bottom: 25px; font-size: 1.6rem;">Đã xem hết ảnh công chúa rồi nè! ✨</h1>
             <div class="trigger-btn" onclick="showLetterScreen()">
-                <span>Nhấn zô đây 💌</span>
+                <span>Nhấn zô xem đê 💌</span>
             </div>
         </div>
 
-        <!-- Letter Screen -->
+        <!-- Letter Screen (Màn hình bức thư lời chúc) -->
         <div id="letter-screen">
             <div class="letter-card">
                 <h2>Gửi Kim Ngân 💕</h2>
@@ -372,7 +374,7 @@
 
     <script>
         /* ========================================================================== */
-        /* 📍 CHỖ THAY ĐỔI 10 ẢNH JPG CỦA BẠN VÀO ĐÂY:                                */
+        /* 📍 CHỖ THAY 10 FILE CẢNH JPG CỦA BẠN VÀO ĐÂY:                               */
         /* ========================================================================== */
         const photosData = [
             {
@@ -418,12 +420,12 @@
             {
                 url: "image9.jpg", // <--- Ảnh 9
                 fallback: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&auto=format&fit=crop&q=80",
-                praise: "Chạm vào màn hình ngunn ơi 💕"
+                praise: "chạm vào màn hình ngunn ơi 💕"
             },
             {
                 url: "image10.jpg", // <--- Ảnh 10
                 fallback: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&auto=format&fit=crop&q=80",
-                praise: "Chạm vào màn hình ngunn ơi 💕"
+                praise: "chạm vào màn hình ngunn ơi 💕"
             }
         ];
 
@@ -440,7 +442,7 @@
                     isMusicPlaying = true;
                     musicBtn.classList.add('playing');
                 }).catch(err => {
-                    console.log("Autoplay blocked, waiting for user interaction.");
+                    console.log("Autoplay bị chặn, chờ chạm vào màn hình.");
                 });
             }
         }
@@ -457,17 +459,13 @@
             }
         }
 
-        // Tự động phát nhạc hoặc phát ngay khi người dùng chạm bất kỳ đâu vào màn hình
-        window.addEventListener('load', () => {
-            playMusic();
-        });
         document.body.addEventListener('click', () => {
             playMusic();
         }, { once: true });
 
 
         /* ========================================================================== */
-        /* LOGIC HIỂN THỊ MÀN HÌNH & ẢNH                                             */
+        /* LOGIC ĐIỀU HƯỚNG MÀN HÌNH & XEM ẢNH                                        */
         /* ========================================================================== */
         let currentIndex = 0;
         const mainScreen = document.getElementById('main-screen');
@@ -477,6 +475,7 @@
         const currentPhoto = document.getElementById('current-photo');
         const currentCaption = document.getElementById('current-caption');
 
+        // Tạo ngôi sao và trái tim bay lơ lửng ở nền
         function createBgDecor() {
             const bgDecor = document.getElementById('bg-decor');
             const symbols = ['⭐', '❤️', '✨', '💖', '🌸'];
@@ -495,10 +494,9 @@
         createBgDecor();
 
         function startGallery() {
-            playMusic(); // Đảm bảo nhạc chắc chắn phát khi bấm bắt đầu
+            playMusic();
             mainScreen.style.display = 'none';
             galleryScreen.style.display = 'flex';
-            currentIndex = 0;
             displayPhoto();
         }
 
@@ -518,12 +516,15 @@
             
             currentIndex++;
             
+            // Xong 8 ảnh đầu -> Quay lại màn hình chính và đổi tên nút thành "Bông hoa đẹp nhất 20/10 đây nè"
             if (currentIndex === 8) {
                 galleryScreen.style.display = 'none';
                 mainScreen.style.display = 'flex';
+                document.getElementById('main-btn-text').innerText = "Bông hoa đẹp nhất 20/10 đây nè";
                 return;
             }
 
+            // Xong 10 ảnh -> Hiện màn hình nút "Nhấn zô xem đê 💌"
             if (currentIndex >= photosData.length) {
                 galleryScreen.style.display = 'none';
                 finalTriggerScreen.style.display = 'flex';
@@ -539,6 +540,7 @@
             typeWriterEffect();
         }
 
+        // Lời chúc gửi Kim Ngân
         const letterText = `Khánh chúc Kim Ngân 20/10 luôn xinh đẹp, đáng yêu và rạng rỡ mỗi ngày. 
 
 Chúc cậu luôn học giỏi, luôn gặp thật nhiều may mắn và gặt hái được nhiều thành công nhé! Mong mọi điều tốt đẹp nhất sẽ luôn đến với công chúa ✨🌸💖`;
@@ -552,7 +554,7 @@ Chúc cậu luôn học giỏi, luôn gặp thật nhiều may mắn và gặt h
                 if (i < letterText.length) {
                     container.innerHTML += letterText.charAt(i);
                     i++;
-                    setTimeout(typing, 25);
+                    setTimeout(typing, 30);
                 }
             }
             typing();
@@ -562,6 +564,7 @@ Chúc cậu luôn học giỏi, luôn gặp thật nhiều may mắn và gặt h
             letterScreen.style.display = 'none';
             mainScreen.style.display = 'flex';
             currentIndex = 0;
+            document.getElementById('main-btn-text').innerText = "Bông hoa đẹp nhất 20/10 đây nè";
         }
     </script>
 </body>
