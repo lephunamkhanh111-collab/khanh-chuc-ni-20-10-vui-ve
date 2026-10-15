@@ -374,57 +374,47 @@
 
     <script>
         /* ========================================================================== */
-        /* 📍 CHỖ THAY 10 FILE ẢNH JPG CỦA BẠN VÀO ĐÂY:                                */
+        /* 📍 DANH SÁCH 10 ẢNH TRỰC TIẾP TỪ GITHUB CỦA BẠN:                             */
         /* ========================================================================== */
         const photosData = [
             {
-                url: "anh1.jpg", // <--- Ảnh 1
-                fallback: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80",
+                url: "anh1.jpg",
                 praise: "Xinh thíaaaa! 🥰"
             },
             {
-                url: "anh2.jpg", // <--- Ảnh 2
-                fallback: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80",
+                url: "anh2.jpg",
                 praise: "Ohhh công chúa ngời ngời! ✨"
             },
             {
-                url: "anh3.jpg", // <--- Ảnh 3
-                fallback: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&auto=format&fit=crop&q=80",
+                url: "anh3.jpg",
                 praise: "Xinh vãi chưởng lun á! 😍"
             },
             {
-                url: "anh4.jpg", // <--- Ảnh 4
-                fallback: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&auto=format&fit=crop&q=80",
+                url: "anh4.jpg",
                 praise: "Đẹp xuất sắc luôn bé ơi! 🌸"
             },
             {
-                url: "anh5.jpg", // <--- Ảnh 5
-                fallback: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&auto=format&fit=crop&q=80",
+                url: "anh5.jpg",
                 praise: "Nhan sắc này đúng là đỉnh chóp! 👑"
             },
             {
-                url: "anh6.jpg", // <--- Ảnh 6
-                fallback: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=600&auto=format&fit=crop&q=80",
+                url: "anh6.jpg",
                 praise: "U là trời, sao mà xinh thế nhờ! 💖"
             },
             {
-                url: "anh7.jpg", // <--- Ảnh 7
-                fallback: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80",
+                url: "anh7.jpg",
                 praise: "xinh quá đi! 💫"
             },
             {
-                url: "anh8.jpg", // <--- Ảnh 8
-                fallback: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&auto=format&fit=crop&q=80",
+                url: "anh8.jpg",
                 praise: "rung động!!! ☀️"
             },
             {
-                url: "anh9.jpg", // <--- Ảnh 9
-                fallback: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&auto=format&fit=crop&q=80",
+                url: "anh9.jpg",
                 praise: "công chúa nek"
             },
             {
-                url: "anh10.jpg", // <--- Ảnh 10
-                fallback: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&auto=format&fit=crop&q=80",
+                url: "anh10.jpg",
                 praise: "chạm vào màn hình ngunn ơi 💕"
             }
         ];
@@ -503,9 +493,6 @@
             if (currentIndex < photosData.length) {
                 const item = photosData[currentIndex];
                 currentPhoto.src = item.url;
-                currentPhoto.onerror = function() {
-                    this.src = item.fallback;
-                };
                 currentCaption.innerText = item.praise;
             }
         }
