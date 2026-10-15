@@ -126,35 +126,30 @@
             z-index: 3;
         }
 
-        /* 8 bông hoa chính (có thể bấm để tải ảnh hoặc xem ảnh) */
+        /* Các bông hoa chính có thể bấm để tải/xem ảnh (Mặc định chưa có ảnh sẽ là màu đỏ) */
         .flower {
             position: absolute;
             width: 65px;
             height: 65px;
-            background: radial-gradient(circle, #ff99bb 0%, #ff6699 70%);
+            background: radial-gradient(circle, #ff4d4d 0%, #cc0000 70%); /* Màu đỏ khi chưa có ảnh */
             border-radius: 50%;
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
             border: 2px dashed #fff;
+        }
+
+        /* Khi hoa đã có ảnh sẽ chuyển sang màu hồng */
+        .flower.has-image {
+            background: radial-gradient(circle, #ff99bb 0%, #ff6699 70%);
         }
 
         .flower:hover {
             transform: scale(1.1);
             box-shadow: 0 6px 15px rgba(255, 255, 255, 0.7);
-        }
-
-        /* Bông hoa đầu tiên được thiết kế đặc biệt và khác biệt hơn các hoa còn lại */
-        .flower.special-flower {
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle, #ffcc00 0%, #ff6600 80%);
-            border: 3px solid #ffffff;
-            box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
-            z-index: 10;
         }
 
         .flower span {
@@ -178,7 +173,7 @@
         }
 
         /* Tọa độ 8 bông hoa chính */
-        .f1 { top: -5px; left: 110px; } /* Bông đặc biệt */
+        .f1 { top: -5px; left: 110px; }
         .f2 { top: 30px; left: 50px; }
         .f3 { top: 35px; left: 180px; }
         .f4 { top: 85px; left: 15px; }
@@ -187,7 +182,7 @@
         .f7 { top: 140px; left: 55px; }
         .f8 { top: 140px; left: 140px; }
 
-        /* Các bông hoa phụ lấp đầy bó hoa cho xôm tụ */
+        /* Rất nhiều bông hoa phụ trang trí xung quanh (chỉ để trưng bày) */
         .bg-flower {
             position: absolute;
             width: 45px;
@@ -196,6 +191,7 @@
             border-radius: 50%;
             opacity: 0.85;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            pointer-events: none; /* Không bấm được */
         }
         .bf1 { top: 10px; left: 20px; }
         .bf2 { top: 5px; left: 230px; }
@@ -206,6 +202,9 @@
         .bf7 { top: 55px; left: 120px; }
         .bf8 { top: 130px; left: 5px; }
         .bf9 { top: 20px; left: 80px; }
+        .bf10 { top: 80px; left: 50px; }
+        .bf11 { top: 40px; left: 140px; }
+        .bf12 { top: 100px; left: 200px; }
 
         /* Dòng chữ nhỏ bên dưới bó hoa */
         .footer-text {
@@ -303,9 +302,9 @@
         </div>
         <div class="ribbon"></div>
 
-        <!-- Nhóm hoa gồm hoa phụ trang trí và 8 bông hoa chính để tải ảnh -->
+        <!-- Nhóm hoa gồm nhiều hoa phụ trang trí và 8 bông hoa chính -->
         <div class="flowers-group">
-            <!-- Các bông hoa phụ xung quanh giúp bó hoa đầy đặn -->
+            <!-- Các bông hoa phụ trang trí (chỉ để trưng, không bấm được) -->
             <div class="bg-flower bf1"></div>
             <div class="bg-flower bf2"></div>
             <div class="bg-flower bf3"></div>
@@ -315,10 +314,13 @@
             <div class="bg-flower bf7"></div>
             <div class="bg-flower bf8"></div>
             <div class="bg-flower bf9"></div>
+            <div class="bg-flower bf10"></div>
+            <div class="bg-flower bf11"></div>
+            <div class="bg-flower bf12"></div>
 
-            <!-- 8 Bông hoa chính (Có thể đưa ảnh vào, bông số 1 khác biệt) -->
-            <div class="flower special-flower f1" onclick="triggerFlower(this, 0)">
-                <span>Đặc biệt</span>
+            <!-- 8 Bông hoa chính (Màu đỏ khi chưa có ảnh, bấm vào để chọn ảnh .jpg) -->
+            <div class="flower f1" onclick="triggerFlower(this, 0)">
+                <span>Chọn ảnh</span>
                 <input type="file" accept=".jpg, .jpeg" onchange="previewImage(event, this, 0)">
             </div>
             <div class="flower f2" onclick="triggerFlower(this, 1)">
@@ -365,20 +367,12 @@
 
     <script>
         // Mảng lưu trữ ảnh cho 8 bông hoa
-        // Nếu bạn muốn gán sẵn đường dẫn ảnh (ví dụ: 'anh1.jpg', 'anh2.jpg'...) thay vì chọn file thủ công, bạn có thể điền tên file vào đây:
         const flowerImages = {
-            0: "", // Ảnh cho bông đặc biệt (hoặc để trống để người dùng tự chọn file)
-            1: "",
-            2: "",
-            3: "",
-            4: "",
-            5: "",
-            6: "",
-            7: ""
+            0: "", 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: ""
         };
 
         function triggerFlower(element, index) {
-            // Nếu bông hoa đã có ảnh (hoặc được gán sẵn đường dẫn), hiển thị ảnh đó
+            // Nếu bông hoa đã có ảnh, hiển thị ảnh đó khi bấm vào
             if (flowerImages[index]) {
                 showModal(flowerImages[index]);
             }
@@ -391,7 +385,11 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     flowerImages[index] = e.target.result; // Lưu dữ liệu ảnh
-                    input.previousElementSibling.innerText = "Xem ảnh"; // Đổi chữ
+                    
+                    // Đổi nhãn trên bông hoa thành "Xem ảnh" và chuyển màu từ đỏ sang hồng
+                    input.previousElementSibling.innerText = "Xem ảnh";
+                    input.parentElement.classList.add('has-image');
+                    
                     showModal(e.target.result); // Hiển thị popup ảnh luôn
                 }
                 reader.readAsDataURL(file);
