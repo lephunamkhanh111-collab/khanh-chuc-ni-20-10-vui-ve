@@ -45,6 +45,36 @@
             100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
 
+        /* Nút Bật/Tắt Nhạc */
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.85);
+            color: #d81b60;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border: 2px solid #fff;
+            transition: all 0.3s ease;
+        }
+
+        .music-btn.playing {
+            animation: rotateMusic 4s linear infinite;
+        }
+
+        @keyframes rotateMusic {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         .container {
             position: relative;
             z-index: 10;
@@ -196,6 +226,13 @@
             50% { opacity: 1; }
         }
 
+        #final-trigger-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1s ease;
+        }
+
         #letter-screen {
             display: none;
             flex-direction: column;
@@ -252,6 +289,14 @@
 </head>
 <body>
 
+    <!-- 📍 CHỖ THÊM BÀI HÁT MP3 VÀO ĐÂY: Thay 'music.mp3' bằng file nhạc của bạn -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Nút bật tắt nhạc -->
+    <div class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</div>
+
     <div id="bg-decor"></div>
 
     <div class="container">
@@ -302,6 +347,14 @@
             <div class="tap-hint" id="tap-hint-text">Chạm vào màn hình để xem tiếp nhé ✨</div>
         </div>
 
+        <!-- Final Trigger Screen -->
+        <div id="final-trigger-screen">
+            <h1 style="margin-bottom: 20px; font-size: 1.6rem;">Đã xem hết hình của công chúa rồi nè! ✨</h1>
+            <div class="trigger-btn" onclick="showLetterScreen()">
+                <span>Nhấn zô đây 💌</span>
+            </div>
+        </div>
+
         <!-- Letter Screen -->
         <div id="letter-screen">
             <div class="letter-card">
@@ -319,73 +372,110 @@
 
     <script>
         /* ========================================================================== */
-        /* 📍 CHỖ ĐỂ TẢI/THAY ĐỔI 10 ẢNH JPG CỦA BẠN VÀO ĐÂY:                          */
-        /* Thay thế các chữ 'image1.jpg', 'image2.jpg'... thành tên file jpg của bạn    */
-        /* (Ví dụ: 'ngan1.jpg', 'ngan2.jpg' hoặc đường dẫn URL ảnh của bạn)          */
+        /* 📍 CHỖ THAY ĐỔI 10 ẢNH JPG CỦA BẠN VÀO ĐÂY:                                */
         /* ========================================================================== */
         const photosData = [
             {
-                url: "image1.jpg", // <--- Thay ảnh 1 ở đây
+                url: "image1.jpg", // <--- Ảnh 1
                 fallback: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=600&auto=format&fit=crop&q=80",
                 praise: "Xinh thíaaaa! 🥰"
             },
             {
-                url: "image2.jpg", // <--- Thay ảnh 2 ở đây
+                url: "image2.jpg", // <--- Ảnh 2
                 fallback: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80",
                 praise: "Ohhh công chúa ngời ngời! ✨"
             },
             {
-                url: "image3.jpg", // <--- Thay ảnh 3 ở đây
+                url: "image3.jpg", // <--- Ảnh 3
                 fallback: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600&auto=format&fit=crop&q=80",
                 praise: "Xinh vãi chưởng lun á! 😍"
             },
             {
-                url: "image4.jpg", // <--- Thay ảnh 4 ở đây
+                url: "image4.jpg", // <--- Ảnh 4
                 fallback: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&auto=format&fit=crop&q=80",
                 praise: "Đẹp xuất sắc luôn bé ơi! 🌸"
             },
             {
-                url: "image5.jpg", // <--- Thay ảnh 5 ở đây
+                url: "image5.jpg", // <--- Ảnh 5
                 fallback: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&auto=format&fit=crop&q=80",
                 praise: "Nhan sắc này đúng là đỉnh chóp! 👑"
             },
             {
-                url: "image6.jpg", // <--- Thay ảnh 6 ở đây
+                url: "image6.jpg", // <--- Ảnh 6
                 fallback: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=600&auto=format&fit=crop&q=80",
                 praise: "U là trời, sao mà xinh thế nhờ! 💖"
             },
             {
-                url: "image7.jpg", // <--- Thay ảnh 7 ở đây
+                url: "image7.jpg", // <--- Ảnh 7
                 fallback: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80",
                 praise: "Góc nghiêng thần thánh quá đi! 💫"
             },
             {
-                url: "image8.jpg", // <--- Thay ảnh 8 ở đây
+                url: "image8.jpg", // <--- Ảnh 8
                 fallback: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=600&auto=format&fit=crop&q=80",
                 praise: "Nụ cười tỏa nắng luôn nha! ☀️"
             },
             {
-                url: "image9.jpg", // <--- Thay ảnh 9 ở đây
+                url: "image9.jpg", // <--- Ảnh 9
                 fallback: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=600&auto=format&fit=crop&q=80",
-                praise: "Chạm vào màn hình ngunn ơi 💕",
-                special: true
+                praise: "Chạm vào màn hình ngunn ơi 💕"
             },
             {
-                url: "image10.jpg", // <--- Thay ảnh 10 ở đây
+                url: "image10.jpg", // <--- Ảnh 10
                 fallback: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&auto=format&fit=crop&q=80",
-                praise: "Chạm vào màn hình ngunn ơi 💕",
-                special: true
+                praise: "Chạm vào màn hình ngunn ơi 💕"
             }
         ];
-        /* ========================================================================== */
 
+        /* ========================================================================== */
+        /* XỬ LÝ NHẠC NỀN                                                              */
+        /* ========================================================================== */
+        const audio = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('musicBtn');
+        let isMusicPlaying = false;
+
+        function playMusic() {
+            if (!isMusicPlaying) {
+                audio.play().then(() => {
+                    isMusicPlaying = true;
+                    musicBtn.classList.add('playing');
+                }).catch(err => {
+                    console.log("Autoplay blocked, waiting for user interaction.");
+                });
+            }
+        }
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                audio.pause();
+                isMusicPlaying = false;
+                musicBtn.classList.remove('playing');
+            } else {
+                audio.play();
+                isMusicPlaying = true;
+                musicBtn.classList.add('playing');
+            }
+        }
+
+        // Tự động phát nhạc hoặc phát ngay khi người dùng chạm bất kỳ đâu vào màn hình
+        window.addEventListener('load', () => {
+            playMusic();
+        });
+        document.body.addEventListener('click', () => {
+            playMusic();
+        }, { once: true });
+
+
+        /* ========================================================================== */
+        /* LOGIC HIỂN THỊ MÀN HÌNH & ẢNH                                             */
+        /* ========================================================================== */
         let currentIndex = 0;
         const mainScreen = document.getElementById('main-screen');
         const galleryScreen = document.getElementById('gallery-screen');
+        const finalTriggerScreen = document.getElementById('final-trigger-screen');
         const letterScreen = document.getElementById('letter-screen');
         const currentPhoto = document.getElementById('current-photo');
         const currentCaption = document.getElementById('current-caption');
-        const tapHintText = document.getElementById('tap-hint-text');
 
         function createBgDecor() {
             const bgDecor = document.getElementById('bg-decor');
@@ -405,6 +495,7 @@
         createBgDecor();
 
         function startGallery() {
+            playMusic(); // Đảm bảo nhạc chắc chắn phát khi bấm bắt đầu
             mainScreen.style.display = 'none';
             galleryScreen.style.display = 'flex';
             currentIndex = 0;
@@ -419,9 +510,6 @@
                     this.src = item.fallback;
                 };
                 currentCaption.innerText = item.praise;
-            } else {
-                galleryScreen.style.display = 'none';
-                showLetterScreen();
             }
         }
 
@@ -433,8 +521,12 @@
             if (currentIndex === 8) {
                 galleryScreen.style.display = 'none';
                 mainScreen.style.display = 'flex';
-                const triggerText = document.querySelector('.trigger-btn span');
-                if (triggerText) triggerText.innerText = "Bông hoa đẹp nhất 20/10 đây nè";
+                return;
+            }
+
+            if (currentIndex >= photosData.length) {
+                galleryScreen.style.display = 'none';
+                finalTriggerScreen.style.display = 'flex';
                 return;
             }
 
@@ -442,13 +534,14 @@
         }
 
         function showLetterScreen() {
+            finalTriggerScreen.style.display = 'none';
             letterScreen.style.display = 'flex';
             typeWriterEffect();
         }
 
-        const letterText = `Khánh chúc Ngân 20/10 luôn xinh đẹp, rạng rỡ và luôn tràn ngập niềm vui trong cuộc sống. 
+        const letterText = `Khánh chúc Kim Ngân 20/10 luôn xinh đẹp, đáng yêu và rạng rỡ mỗi ngày. 
 
-Chúc mọi điều tốt đẹp nhất sẽ đến với cậu, luôn mỉm cười và gặt hái thật nhiều thành công nhé! Mong rằng ngày nào của Ngân cũng là một ngày thật hạnh phúc và bình yên. ✨🌸`;
+Chúc cậu luôn học giỏi, luôn gặp thật nhiều may mắn và gặt hái được nhiều thành công nhé! Mong mọi điều tốt đẹp nhất sẽ luôn đến với công chúa ✨🌸💖`;
 
         function typeWriterEffect() {
             const container = document.getElementById('typed-letter');
@@ -460,15 +553,6 @@ Chúc mọi điều tốt đẹp nhất sẽ đến với cậu, luôn mỉm cư
                     container.innerHTML += letterText.charAt(i);
                     i++;
                     setTimeout(typing, 25);
-                } else {
-                    if (!document.getElementById('final-action-btn')) {
-                        const btnContainer = document.createElement('div');
-                        btnContainer.id = 'final-action-btn';
-                        btnContainer.style.marginTop = '20px';
-                        btnContainer.style.textAlign = 'center';
-                        btnContainer.innerHTML = `<div class="trigger-btn" style="padding: 10px 20px; font-size: 1rem;" onclick="alert('Chúc Kim Ngân mãi đáng yêu và hạnh phúc nha! ❤️')"><span>Nhấn zô xem đê 💌</span></div>`;
-                        document.querySelector('.letter-card').appendChild(btnContainer);
-                    }
                 }
             }
             typing();
@@ -478,8 +562,6 @@ Chúc mọi điều tốt đẹp nhất sẽ đến với cậu, luôn mỉm cư
             letterScreen.style.display = 'none';
             mainScreen.style.display = 'flex';
             currentIndex = 0;
-            const finalBtn = document.getElementById('final-action-btn');
-            if (finalBtn) finalBtn.remove();
         }
     </script>
 </body>
