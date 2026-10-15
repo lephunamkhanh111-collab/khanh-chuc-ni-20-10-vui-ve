@@ -378,16 +378,14 @@
             { url: "anh6.jpg", praise: "U là trời, sao mà xinh thế nhờ! 💖" },
             { url: "anh7.jpg", praise: "xinh quá đi! 💫" },
             { url: "anh8.jpg", praise: "rung động!!! ☀️" },
-            { url: "anh9.jpg", praise: "công chúa nek" },
+            { url: "anh9.jpg", praise: "chạm vào màn hình ngunn ơi 💕" },
             { url: "anh10.jpg", praise: "chạm vào màn hình ngunn ơi 💕" }
         ];
 
-        // 🚀 TẢI TRƯỚC TẤT CẢ ẢNH NGẦM ĐỂ KHI BẤM KHÔNG BỊ CHẬM
-        const preloadedImages = [];
+        // Tải trước ngầm toàn bộ 10 ảnh
         photosData.forEach((item) => {
             const img = new Image();
             img.src = item.url;
-            preloadedImages.push(img);
         });
 
         const audio = document.getElementById('bg-music');
@@ -450,6 +448,7 @@
             playMusic();
             mainScreen.style.display = 'none';
             galleryScreen.style.display = 'flex';
+            currentIndex = 0;
             displayPhoto();
         }
 
