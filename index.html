@@ -226,7 +226,6 @@
             50% { opacity: 1; }
         }
 
-        /* Nút xem lời chúc sau khi xem xong tất cả ảnh */
         #final-trigger-screen {
             display: none;
             flex-direction: column;
@@ -234,7 +233,6 @@
             animation: fadeIn 1s ease;
         }
 
-        /* Màn hình lá thư lời chúc */
         #letter-screen {
             display: none;
             flex-direction: column;
@@ -291,12 +289,10 @@
 </head>
 <body>
 
-    <!-- 📍 CHỖ THÊM FILE NHẠC MP3 CỦA BẠN VÀO ĐÂY -->
     <audio id="bg-music" loop preload="auto">
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Nút Bật/Tắt Nhạc -->
     <div class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵</div>
 
     <div id="bg-decor"></div>
@@ -373,55 +369,27 @@
     </div>
 
     <script>
-        /* ========================================================================== */
-        /* 📍 DANH SÁCH 10 ẢNH TRỰC TIẾP TỪ GITHUB CỦA BẠN:                             */
-        /* ========================================================================== */
         const photosData = [
-            {
-                url: "anh1.jpg",
-                praise: "Xinh thíaaaa! 🥰"
-            },
-            {
-                url: "anh2.jpg",
-                praise: "Ohhh công chúa ngời ngời! ✨"
-            },
-            {
-                url: "anh3.jpg",
-                praise: "Xinh vãi chưởng lun á! 😍"
-            },
-            {
-                url: "anh4.jpg",
-                praise: "Đẹp xuất sắc luôn bé ơi! 🌸"
-            },
-            {
-                url: "anh5.jpg",
-                praise: "Nhan sắc này đúng là đỉnh chóp! 👑"
-            },
-            {
-                url: "anh6.jpg",
-                praise: "U là trời, sao mà xinh thế nhờ! 💖"
-            },
-            {
-                url: "anh7.jpg",
-                praise: "xinh quá đi! 💫"
-            },
-            {
-                url: "anh8.jpg",
-                praise: "rung động!!! ☀️"
-            },
-            {
-                url: "anh9.jpg",
-                praise: "công chúa nek"
-            },
-            {
-                url: "anh10.jpg",
-                praise: "chạm vào màn hình ngunn ơi 💕"
-            }
+            { url: "anh1.jpg", praise: "Xinh thíaaaa! 🥰" },
+            { url: "anh2.jpg", praise: "Ohhh công chúa ngời ngời! ✨" },
+            { url: "anh3.jpg", praise: "Xinh vãi chưởng lun á! 😍" },
+            { url: "anh4.jpg", praise: "Đẹp xuất sắc luôn bé ơi! 🌸" },
+            { url: "anh5.jpg", praise: "Nhan sắc này đúng là đỉnh chóp! 👑" },
+            { url: "anh6.jpg", praise: "U là trời, sao mà xinh thế nhờ! 💖" },
+            { url: "anh7.jpg", praise: "xinh quá đi! 💫" },
+            { url: "anh8.jpg", praise: "rung động!!! ☀️" },
+            { url: "anh9.jpg", praise: "công chúa nek" },
+            { url: "anh10.jpg", praise: "chạm vào màn hình ngunn ơi 💕" }
         ];
 
-        /* ========================================================================== */
-        /* XỬ LÝ NHẠC NỀN                                                              */
-        /* ========================================================================== */
+        // 🚀 TẢI TRƯỚC TẤT CẢ ẢNH NGẦM ĐỂ KHI BẤM KHÔNG BỊ CHẬM
+        const preloadedImages = [];
+        photosData.forEach((item) => {
+            const img = new Image();
+            img.src = item.url;
+            preloadedImages.push(img);
+        });
+
         const audio = document.getElementById('bg-music');
         const musicBtn = document.getElementById('musicBtn');
         let isMusicPlaying = false;
@@ -453,10 +421,6 @@
             playMusic();
         }, { once: true });
 
-
-        /* ========================================================================== */
-        /* LOGIC XEM ẢNH & CHUYỂN MÀN HÌNH                                            */
-        /* ========================================================================== */
         let currentIndex = 0;
         const mainScreen = document.getElementById('main-screen');
         const galleryScreen = document.getElementById('gallery-screen');
@@ -502,7 +466,6 @@
             
             currentIndex++;
 
-            // Sau khi chạm xem hết tất cả các ảnh (10 ảnh), hiện nút "nhấn zô đây nekk"
             if (currentIndex >= photosData.length) {
                 galleryScreen.style.display = 'none';
                 finalTriggerScreen.style.display = 'flex';
